@@ -909,7 +909,7 @@ under the License.
         <row-actions>
             <set field="total" value="${bsh:org.ofbiz.accounting.invoice.InvoiceWorker.getInvoiceTotal(delegator, invoiceId, actualCurrency)}"/>
             <set field="amountToApply" value="${bsh:org.ofbiz.accounting.invoice.InvoiceWorker.getInvoiceNotApplied(delegator,invoiceId, actualCurrency)}"/>
-            <set field="amountApplied" value="${bsh:org.ofbiz.accounting.invoice.InvoiceWorker.getInvoiceApplied(delegator,invoiceId, org.ofbiz.base.util.UtilDateTime.nowTimestamp(), actualCurrency)}"/>
+            <set field="amountApplied" value="${bsh:org.ofbiz.accounting.invoice.InvoiceWorker.getInvoiceApplied(delegator,invoiceId, org.noerp.base.util.UtilDateTime.nowTimestamp(), actualCurrency)}"/>
         </row-actions>
         <field name="invoiceId">
             <display-entity entity-name="Invoice" description=" " also-hidden="true">

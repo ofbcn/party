@@ -265,7 +265,7 @@ under the License.
       <#elseif partyRow.getModelEntity().isField("groupName") && partyRow.groupName?has_content>
           ${partyRow.groupName}
       <#else>
-        <#assign partyName = Static["org.ofbiz.party.party.PartyHelper"].getPartyName(partyRow, true)>
+        <#assign partyName = Static["com.ofbizcn.party.party.PartyHelper"].getPartyName(partyRow, true)>
         <#if partyName?has_content>
           ${partyName}
         <#else>
@@ -298,7 +298,7 @@ under the License.
           <#if partyRelateCom?has_content>
             <#list partyRelateCom as partyRelationship>
               <#if partyRelationship.partyIdFrom?has_content>
-                <#assign companyName=Static["org.ofbiz.party.party.PartyHelper"].getPartyName(delegator, partyRelationship.partyIdFrom, true)>
+                <#assign companyName=Static["com.ofbizcn.party.party.PartyHelper"].getPartyName(delegator, partyRelationship.partyIdFrom, true)>
           ${companyName!}
               </#if>
             </#list>
@@ -310,7 +310,7 @@ under the License.
         <td></td><td></td>
       </#if>
         <td>
-      <#assign mainRole = dispatcher.runSync("getPartyMainRole", Static["org.ofbiz.base.util.UtilMisc"].toMap("partyId", partyRow.partyId, "userLogin", userLogin))/>
+      <#assign mainRole = dispatcher.runSync("getPartyMainRole", Static["org.noerp.base.util.UtilMisc"].toMap("partyId", partyRow.partyId, "userLogin", userLogin))/>
               ${mainRole.description!}
         </td>
         <#assign partyDate = delegator.findOne("Party", {"partyId":partyRow.partyId}, true)/>

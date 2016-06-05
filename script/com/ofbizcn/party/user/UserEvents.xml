@@ -314,7 +314,7 @@ under the License.
             <set field="delegator" from-field="parameters.delegator" type="Object"/>
             <call-bsh><![CDATA[
                 boolean useEncryption = "true".equals(org.ofbiz.entity.util.EntityUtilProperties.getPropertyValue("security", "password.encrypt", delegator));
-                if (useEncryption) { newUserLogin.set("currentPassword", org.ofbiz.base.crypto.HashCrypt.getDigestHash((String) newUserLogin.get("currentPassword"))); }
+                if (useEncryption) { newUserLogin.set("currentPassword", org.noerp.base.crypto.HashCrypt.getDigestHash((String) newUserLogin.get("currentPassword"))); }
             ]]></call-bsh>
 
             <!-- create the UserLogin manually to get around ordering and security constraints in the service -->
