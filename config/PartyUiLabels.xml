@@ -12835,7 +12835,7 @@
         <value xml:lang="ru">Посещения</value>
         <value xml:lang="th">การเยี่ยมชม</value>
         <value xml:lang="vi">Các truy nhập ứng dụng</value>
-        <value xml:lang="zh">访问</value>
+        <value xml:lang="zh">访问记录</value>
         <value xml:lang="zh_TW">拜訪</value>
     </property>
     <property key="PartyWebAddressSuccessfullyCreated">

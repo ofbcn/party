@@ -289,7 +289,8 @@
             <key-map field-name="contactMechId" />
         </relation>
     </entity>
-
+    
+    <!-- 邮政地址 -->
     <entity entity-name="PostalAddress" package-name="com.ofbizcn.party.contact"
         title="Postal Address Entity">
         <field name="contactMechId" type="id-ne"></field>

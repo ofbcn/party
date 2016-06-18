@@ -68,31 +68,6 @@
                 <parameter param-name="partyId"/>
             </link>
         </menu-item>
-        <menu-item name="viewvendor" title="${uiLabelMap.PartyVendor}">
-            <link target="viewvendor">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="EditPartyTaxAuthInfos" title="${uiLabelMap.PartyTaxAuthInfos}">
-            <link target="EditPartyTaxAuthInfos">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="EditPartyRates" title="${uiLabelMap.CommonRates}">
-            <link target="EditPartyRates">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="editShoppingList" title="${uiLabelMap.PartyShoppingLists}">
-            <link target="editShoppingList">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="ViewSegmentRoles" title="${uiLabelMap.PartySegments}">
-            <link target="ViewSegmentRoles">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
         <menu-item name="EditPartyClassifications" title="${uiLabelMap.PartyClassifications}">
             <link target="EditPartyClassifications">
                 <parameter param-name="partyId"/>
@@ -108,58 +83,15 @@
                 <parameter param-name="partyId"/>
             </link>
         </menu-item>
-        <menu-item name="EditPartySkills" title="${uiLabelMap.CommonPartySkills}">
-            <link target="EditPartySkills">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="EditPartyResumes" title="${uiLabelMap.HumanResPartyResume}">
-            <link target="EditPartyResumes">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="EditEmploymentApps" title="${uiLabelMap.HumanResEmploymentApp}">
-            <link target="EditEmploymentApps">
-                <parameter param-name="partyId"/>
-                <parameter param-name="referredByPartyId" from-field="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="FinancialHistory" title="${uiLabelMap.PartyFinancialHistory}">
-            <condition>
-                <if-service-permission service-name="acctgBasePermissionCheck" main-action="VIEW"/>
-            </condition>
-            <link target="PartyFinancialHistory">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
         <menu-item name="PartyGeoLocation" title="${uiLabelMap.CommonGeoLocation}">
             <link target="PartyGeoLocation">
                 <parameter param-name="partyId"/>
             </link>
         </menu-item>
-        <menu-item name="productStoreRoles" title="${uiLabelMap.ProductProductStoreRoles}">
-            <link target="ViewProductStoreRoles">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
     </menu>
+    
     <menu name="ProfileSubTabBar" menu-container-style="button-bar button-style-2">
-        <menu-item name="createNew" title="${uiLabelMap.AccountingBillingAccount}" >
-            <condition>
-                <if-service-permission service-name="acctgBasePermissionCheck" main-action="VIEW"/>
-            </condition>
-            <link target="/accounting/control/FindBillingAccount" url-mode="inter-app">
-                <parameter param-name="partyId"/>
-            </link>
-        </menu-item>
-        <menu-item name="finAccounts" title="${uiLabelMap.AccountingFinAccounts}">
-            <condition>
-                <if-service-permission service-name="acctgBasePermissionCheck" main-action="VIEW"/>
-            </condition>
-            <link target="/accounting/control/FindFinAccount" url-mode="inter-app">
-                <parameter param-name="ownerPartyId" from-field="partyId"/>
-            </link>
-        </menu-item>
+
         <menu-item name="PartyCommEvents" title="${uiLabelMap.PartyCommunications}" >
             <link target="ListPartyCommEvents">
                 <parameter param-name="partyId"/>

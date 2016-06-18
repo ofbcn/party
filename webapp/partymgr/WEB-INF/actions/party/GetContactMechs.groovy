@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import org.noerp.party.contact.ContactMechWorker;
+import com.ofbizcn.party.contact.ContactMechWorker;
 
 partyId = partyId ?: parameters.partyId;
 showOld = "true".equals(parameters.SHOW_OLD);
