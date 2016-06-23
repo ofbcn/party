@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -2361,5 +2362,149 @@ public class PartyServices {
 
 		result = ServiceUtil.returnSuccess(partiesCreated + " new parties created");
 		return result;
+	}
+	
+	//获得某个组的所有人
+    public static Map<String, Object> getPersonsByPartyGroup(DispatchContext dctx, Map<String, Object> context) {
+    	
+    	Delegator delegator = dctx.getDelegator();
+    	Locale locale = (Locale) context.get("locale");
+    	
+    	String partyGroupId = (String) context.get("partyGroupId");
+    	String roleTypeId = (String) context.get("roleTypeId");
+    	
+    	Boolean recursive = true;
+    	if(context.get("recursive") != null){
+    		recursive = (Boolean) context.get("recursive");
+    	}
+    	
+    	List<Map<String, Object>> persons = FastList.newInstance();
+    	
+    	try {
+    		persons = getPersonsByPartyGroup(delegator, locale, partyGroupId, roleTypeId, recursive);
+		} catch (GenericEntityException e) {
+	        return ServiceUtil.returnError(e.getLocalizedMessage());
+		}
+		
+    	Map<String, Object> resp = ServiceUtil.returnSuccess();
+        resp.put("persons", persons);
+        
+        return resp;
+    }
+    
+    //获得组的所有人员
+    public static List<Map<String, Object>> getPersonsByPartyGroup(Delegator delegator, Locale locale, String partyGroupId, String roleTypeId, boolean recursive)
+    		throws GenericEntityException{
+    	
+    	Map<String, Object> condition = UtilMisc.toMap("partyIdFrom", partyGroupId, "partyTypeId", "PERSON");
+    	
+    	if(roleTypeId != null){
+    		condition.put("roleTypeIdTo", roleTypeId);
+    	}
+    	
+    	List<GenericValue> persons = delegator.findByAnd("PartyRelationshipAndDetail", condition, null, false);
+    	
+    	//重新组装
+    	List<Map<String, Object>> members = FastList.newInstance();
+    	for (Iterator<GenericValue> iterator = persons.iterator(); iterator.hasNext();) {
+    		
+    		GenericValue genericValue = (GenericValue) iterator.next();
+    		
+    		members.add(UtilMisc.toMap(
+    					"partyId", (Object) genericValue.getString("partyId"),
+    					"name", (Object) PartyHelper.getPartyName(genericValue, true),
+    					"firstName", (Object) genericValue.getString("firstName"),
+    					"middleName", (Object) genericValue.getString("middleName"),
+    					"lastName", (Object) genericValue.getString("lastName"),
+    					"roleTypeId", (Object) genericValue.getString("roleTypeIdTo")
+    				));
+		}
+    	
+    	//递归子部门
+    	if(recursive){
+    		List<GenericValue> childPartyGroups = EntityUtil.filterByDate(delegator.findByAnd("PartyRelationshipAndDetail",
+    				UtilMisc.toMap("partyIdFrom", partyGroupId, "partyRelationshipTypeId", "GROUP_ROLLUP"), null, false));
+    		
+    		for (Iterator<GenericValue> iterator = childPartyGroups.iterator(); iterator.hasNext();) {
+				GenericValue genericValue = (GenericValue) iterator.next();
+				partyGroupId = genericValue.getString("partyIdTo");
+				List<Map<String, Object>> children = getPersonsByPartyGroup(delegator, locale, partyGroupId, roleTypeId, recursive);
+				members.addAll(children);
+			}
+    	}
+    	    	
+    	return members;
+    }
+    
+	//获得人员的同组人员
+	public static Map<String, Object> getGroupMates(DispatchContext dctx, Map<String, Object> context){
+		
+		GenericValue userLogin = (GenericValue) context.get("userLogin");
+		Delegator delegator = dctx.getDelegator();
+		LocalDispatcher dispatcher = dctx.getDispatcher();
+		
+		Map<String, Object> condition = UtilMisc.toMap("roleTypeIdFrom", "INTERNAL_ORGANIZATIO");
+		
+		String partyId = (String) context.get("partyId");
+		if(partyId != null){
+    		condition.put("partyIdTo", partyId);
+    	}else{
+    		condition.put("partyIdTo", userLogin.getString("partyId"));
+    	}
+		
+		List<GenericValue> partyGroupIdList;
+		Map<String, Object> fieldMap = UtilMisc.toMap("userLogin", userLogin);
+		Map<String, Object> newfieldMap = null;
+		Map<String, Object> serResult = null;
+		List<Map<String, Object>> allPersons = FastList.newInstance();
+		List<Map<String, Object>> persons = FastList.newInstance();
+		
+		try {
+			 partyGroupIdList = delegator.findByAnd("PartyRelationship", condition, null, false);
+		} catch (GenericEntityException e) {
+			 return ServiceUtil.returnError(e.getLocalizedMessage());
+		}
+		
+		for (Iterator<GenericValue> iterator = partyGroupIdList.iterator(); iterator.hasNext();) {
+			
+			GenericValue partyGroup = (GenericValue) iterator.next();
+			fieldMap.put("partyGroupId", partyGroup.getString("partyIdFrom"));
+			fieldMap.put("recursive", "true");
+			try {
+				newfieldMap = dispatcher.getDispatchContext().makeValidContext("getPersonsByPartyGroup", "IN", fieldMap);
+				serResult = dispatcher.runSync("getPersonsByPartyGroup", newfieldMap);
+			} catch (GenericServiceException e) {
+				 return ServiceUtil.returnError(e.getLocalizedMessage());
+			}
+			List<Map<String, Object>> personsItem = FastList.newInstance();
+			personsItem = UtilGenerics.checkList(serResult.get("persons"));
+			
+			for (Map<String, Object> person : personsItem) {
+				
+				Map<String, Object> newPerson = UtilMisc.toMap("partyId",(String) person.get("partyId"),"name",(String)person.get("name"));
+				allPersons.add(newPerson);
+			}
+		}
+		
+		for(Map<String, Object> person : allPersons){
+			if(persons.isEmpty()){
+				persons.add(person);
+			}else{
+				Boolean flag = false ;
+				for(Map<String, Object> existPerson : persons){
+					if((person.get("partyId")).equals(existPerson.get("partyId"))){
+						flag = true;
+					}
+				}
+				if(flag == false){
+					persons.add(person);
+				}
+			}
+		}
+		
+		Map<String, Object> resp = ServiceUtil.returnSuccess();
+		resp.put("persons", persons);
+		
+		return resp;
 	}
 }

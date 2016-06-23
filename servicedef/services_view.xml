@@ -177,4 +177,31 @@ under the License.
         <attribute name="contactMechId" type="String" mode="IN" optional="false"/>
         <attribute name="geos" type="java.util.List" mode="OUT" optional="true"/>
     </service>
+    
+    <!-- 获得组的组员 -->
+    <service name="getPersonsByPartyGroup" engine="java" 
+        location="com.ofbizcn.party.party.PartyServices" invoke="getPersonsByPartyGroup" auth="true">
+        <description>Get members of party group</description>
+        <attribute name="partyGroupId" mode="IN" type="String"/>
+        <attribute name="roleTypeId" mode="IN" type="String" optional="true"/>
+        <attribute name="recursive" mode="IN" type="Boolean" optional="true"/>
+        <attribute name="persons" mode="OUT" type="List"/>
+    </service>
+    
+    <!-- 获得用户在某个组的角色 -->
+    <service name="getUserRoleTypesByPartyGroupId" engine="simple" 
+        location="component://party/script/com/ofbizcn/party/party/PartyServices.xml" invoke="getUserRoleTypesByPartyGroupId" auth="true">
+        <description>Get role types by party group id</description>
+        <attribute name="partyId" mode="IN" type="String"/>
+        <attribute name="partyGroupId" mode="IN" type="String"/>
+        <attribute name="roleTypes" mode="OUT" type="List"/>
+    </service>
+    
+    <!-- 获得当前用户所在组的人员 -->
+    <service name="getGroupMates" engine="java" 
+        location="com.ofbizcn.party.party.PartyServices" invoke="getGroupMates" auth="true">
+        <attribute name="partyId" mode="IN" type="String" optional="true"/>
+        <attribute name="persons" mode="OUT" type="List"/>
+    </service>
+    
 </services>

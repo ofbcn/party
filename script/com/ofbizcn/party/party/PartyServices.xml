@@ -1403,4 +1403,50 @@
                 in-map-name="emailParams" />
         </if-not-empty>
     </simple-method>
+    
+    <!-- 获得用户的所有组 -->
+    <simple-method method-name="getUserPartyGroups" short-description="Get child party groups">
+        <if-empty field="parameters.partyId">
+            <set field="parameters.partyId" from-field="userLogin.partyId"/>
+        </if-empty>
+        <set field="partyGroups" type="List"/>
+        <entity-condition list="details" entity-name="PartyRelationshipAndDetail" filter-by-date="true">
+            <condition-list>
+                <condition-expr field-name="partyIdTo" from-field="parameters.partyId"/>
+                <condition-expr field-name="partyTypeId" value="PERSON"/>
+                <condition-expr field-name="roleTypeIdTo" from-field="parameters.roleTypeId" ignore-if-null="true"/>
+            </condition-list>
+        </entity-condition>
+        <iterate entry="detail" list="details">
+            <set field="partyGroup" from-field="detail.partyIdFrom"/>
+            <if-compare operator="not-equals" value="true" field="parameters.onlyPartyGroupIds">
+                <entity-one value-field="partyGroup" entity-name="PartyGroup">
+                    <field-map field-name="partyId" from-field="detail.partyIdFrom"/>
+                </entity-one>
+            </if-compare>
+            <field-to-list list="partyGroups" field="partyGroup"/>
+        </iterate>
+        <field-to-result field="partyGroups"/>
+    </simple-method>
+    
+    <!-- 获得用户在某个组的角色 -->
+    <simple-method method-name="getUserRoleTypesByPartyGroupId" short-description="Get role types by party group id">
+        <entity-and list="relationships" entity-name="PartyRelationship" filter-by-date="true">
+            <field-map field-name="partyIdTo" from-field="parameters.partyId"/>
+            <field-map field-name="partyIdFrom" from-field="parameters.partyGroupId"/>
+            <select-field field-name="roleTypeIdTo"/>
+        </entity-and>
+        <set field="roleTypes" type="List"/>
+        <iterate entry="relationship" list="relationships">
+            <entity-one value-field="roleType" entity-name="RoleType">
+                <field-map field-name="roleTypeId" from-field="relationship.roleTypeIdTo"/>
+            </entity-one>
+            <set field="tmp.roleTypeId" from-field="roleType.roleTypeId"/>
+            <set field="tmp.description" from-field="roleType.description"/>
+            <field-to-list list="roleTypes" field="tmp"/>
+            <clear-field field="tmp"/>
+        </iterate>
+        <field-to-result field="roleTypes"/>
+    </simple-method>
+    
 </simple-methods>
