@@ -2363,6 +2363,58 @@ public class PartyServices {
 		result = ServiceUtil.returnSuccess(partiesCreated + " new parties created");
 		return result;
 	}
+
+    //服务：获得组的树结构
+    public static Map<String, Object> getPartyGroupTree(DispatchContext dctx, Map<String, Object> context) {
+    
+    	Delegator delegator = dctx.getDelegator();
+    	Locale locale = (Locale) context.get("locale");
+    	
+    	String partyGroupId = (String) context.get("partyGroupId");
+    	String roleTypeId = (String) context.get("roleTypeId");
+    	
+    	Map<String, Object> tree = FastMap.newInstance();
+    	
+    	try {
+    		tree = getPartyGroupTree(delegator, locale, partyGroupId, roleTypeId);
+		} catch (GenericEntityException e) {
+	        return ServiceUtil.returnError(e.getLocalizedMessage());
+		}
+		
+    	Map<String, Object> resp = ServiceUtil.returnSuccess();
+        resp.put("tree", tree);
+        
+        return resp;
+    }
+    
+    //获得组的树结构
+    public static Map<String, Object> getPartyGroupTree(Delegator delegator, Locale locale, String partyGroupId, String roleTypeId)
+    		throws GenericEntityException{
+    	
+    	Map<String, Object> currentPartyGroup = FastMap.newInstance();
+    	
+    	GenericValue partyGroup = delegator.findOne("PartyGroup", UtilMisc.toMap("partyId", partyGroupId), false);
+    	
+    	currentPartyGroup.put("partyId", partyGroup.getString("partyId"));
+    	currentPartyGroup.put("groupName", partyGroup.getString("groupName"));
+    	
+    	List<Map<String, Object>> members = getPersonsByPartyGroup(delegator, locale, partyGroupId, roleTypeId, false);
+    	currentPartyGroup.put("members", members);
+    	
+    	List<GenericValue> childPartyGroups = EntityUtil.filterByDate(delegator.findByAnd("PartyRelationshipAndDetail",
+				UtilMisc.toMap("partyIdFrom", partyGroupId, "partyTypeId", "PARTY_GROUP"), null, false));
+		
+    	List<Map<String, Object>> groups = FastList.newInstance();
+		for (Iterator<GenericValue> iterator = childPartyGroups.iterator(); iterator.hasNext();) {
+			GenericValue genericValue = (GenericValue) iterator.next();
+			partyGroupId = genericValue.getString("partyIdTo");
+			Map<String, Object> child = getPartyGroupTree(delegator, locale, partyGroupId, roleTypeId);
+			groups.add(child);
+		}
+		currentPartyGroup.put("groups", groups);
+    	
+    	return currentPartyGroup;
+    }
 	
 	//获得某个组的所有人
     public static Map<String, Object> getPersonsByPartyGroup(DispatchContext dctx, Map<String, Object> context) {

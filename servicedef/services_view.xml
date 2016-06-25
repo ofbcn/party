@@ -178,6 +178,15 @@ under the License.
         <attribute name="geos" type="java.util.List" mode="OUT" optional="true"/>
     </service>
     
+    <!-- 获得组的树结构 -->
+    <service name="getPartyGroupTree" engine="java" 
+        location="com.ofbizcn.party.party.PartyServices" invoke="getPartyGroupTree" auth="true">
+        <description>Get party group tree</description>
+        <attribute name="partyGroupId" mode="IN" type="String"/>
+        <attribute name="roleTypeId" mode="IN" type="String" optional="true"/>
+        <attribute name="tree" mode="OUT" type="Map"/>
+    </service>
+    
     <!-- 获得组的组员 -->
     <service name="getPersonsByPartyGroup" engine="java" 
         location="com.ofbizcn.party.party.PartyServices" invoke="getPersonsByPartyGroup" auth="true">
@@ -186,6 +195,16 @@ under the License.
         <attribute name="roleTypeId" mode="IN" type="String" optional="true"/>
         <attribute name="recursive" mode="IN" type="Boolean" optional="true"/>
         <attribute name="persons" mode="OUT" type="List"/>
+    </service>
+    
+    <!-- 获得用户的所有组 -->
+    <service name="getUserPartyGroups" engine="simple" 
+        location="component://party/script/com/ofbizcn/party/party/PartyServices.xml" invoke="getUserPartyGroups" auth="true">
+        <description>Get user party groups</description>
+        <attribute name="partyId" mode="IN" type="String" optional="true"/>
+        <attribute name="roleTypeId" mode="IN" type="String" optional="true"/>
+        <attribute name="onlyPartyGroupIds" mode="IN" type="Boolean" optional="true" default-value="false"/>
+        <attribute name="partyGroups" mode="OUT" type="List" optional="true"/>
     </service>
     
     <!-- 获得用户在某个组的角色 -->
