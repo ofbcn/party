@@ -1203,6 +1203,7 @@
     <simple-method method-name="sendUpdatePersonalInfoEmailNotification"
         short-description="Send the Notification email on personal information updation"
         login-required="false">
+        <return/><!--  -->
         <map-to-map map="parameters" to-map="bodyParameters" />
         <set field="productStoreId" from-field="parameters.productStoreId" />
         <if-empty field="productStoreId">
