@@ -386,6 +386,7 @@ under the License.
     <StatusValidChange statusId="PARTYINV_PENDING" statusIdTo="PARTYINV_ACCEPTED" transitionName="Accepted"/>
     <StatusValidChange statusId="PARTYINV_PENDING" statusIdTo="PARTYINV_CANCELLED" transitionName="Cancelled"/>
 
+    <!-- 
     <TermType description="Financial" hasTable="N" parentTypeId="" termTypeId="FINANCIAL_TERM"/>
     <TermType description="Payment (net days)" hasTable="N" parentTypeId="FINANCIAL_TERM" termTypeId="FIN_PAYMENT_TERM"/>
     <TermType description="Payment net days, part 1" hasTable="N" parentTypeId="FIN_PAYMENT_TERM" termTypeId="FIN_PAY_NETDAYS_1"/>
@@ -431,7 +432,8 @@ under the License.
     <TermType description="Preferred Freight" parentTypeId="PURCHASING" termTypeId="PURCH_FREIGHT"/>
 
     <TermType description="Other" hasTable="N" parentTypeId="" termTypeId="OTHER_TERM"/>
-
+    -->
+ 
     <!-- User preferences data -->
     <UserPrefGroupType userPrefGroupTypeId="GLOBAL_PREFERENCES" description="Global preferences"/>
     <UserPreference userLoginId="_NA_" userPrefTypeId="ORGANIZATION_PARTY" userPrefGroupTypeId="GLOBAL_PREFERENCES" userPrefValue="DEFAULT"/>
