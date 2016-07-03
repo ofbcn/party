@@ -20,6 +20,7 @@ under the License.
 
 <simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://noerp.org/dtds/simple-methods.xsd">
+        
     <simple-method method-name="updateAVSOverride" short-description="Create/Update The AVS Override String">
         <make-value value-field="lookupPKMap" entity-name="PartyIcsAvsOverride"/>
         <set-pk-fields map="parameters" value-field="lookupPKMap"/>
@@ -168,7 +169,9 @@ under the License.
                 <simple-map-processor name="emailAddress">
                     <process field="emailAddress">
                         <copy/>
-                        <validate-method method="isEmail"><fail-property resource="PartyUiLabels" property="PartyEmailAddressNotFormattedCorrectly"/></validate-method>
+                        <validate-method method="isEmail">
+                            <fail-property resource="PartyUiLabels" property="PartyEmailAddressNotFormattedCorrectly"/>
+                        </validate-method>
                     </process>
                 </simple-map-processor>
             </call-map-processor>
@@ -239,4 +242,5 @@ under the License.
         <set-service-fields service-name="updateBillingAccount" to-map="deleteBillingAccountCtx" map="parameters"/>
         <call-service service-name="updateBillingAccount" in-map-name="deleteBillingAccountCtx"/>
     </simple-method>
+    
 </simple-methods>
