@@ -313,7 +313,7 @@ under the License.
             <!-- If password encryption is enabled, encrpyt it now -->
             <set field="delegator" from-field="parameters.delegator" type="Object"/>
             <call-bsh><![CDATA[
-                boolean useEncryption = "true".equals(org.ofbiz.entity.util.EntityUtilProperties.getPropertyValue("security", "password.encrypt", delegator));
+                boolean useEncryption = "true".equals(org.noerp.entity.util.EntityUtilProperties.getPropertyValue("security", "password.encrypt", delegator));
                 if (useEncryption) { newUserLogin.set("currentPassword", org.noerp.base.crypto.HashCrypt.getDigestHash((String) newUserLogin.get("currentPassword"))); }
             ]]></call-bsh>
 
@@ -329,7 +329,7 @@ under the License.
             </call-class-method>
             <if-compare-field field="autoPasswordChangeEnabled" operator="equals" to-field="true">
                 <call-class-method method-name="createUserLoginPasswordHistory" class-name="org.ofbiz.common.login.LoginServices">
-                    <field field="delegator" type="org.ofbiz.entity.Delegator"/>
+                    <field field="delegator" type="org.noerp.entity.Delegator"/>
                     <string value="${newUserLogin.userLoginId}"/>
                     <string value="${newUserLogin.currentPassword}"/>
                 </call-class-method>

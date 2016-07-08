@@ -21,7 +21,6 @@ package com.ofbizcn.party.party;
 
 import org.noerp.base.util.Debug;
 import org.noerp.base.util.UtilFormatOut;
-import org.noerp.base.util.UtilMisc;
 import org.noerp.entity.Delegator;
 import org.noerp.entity.GenericEntityException;
 import org.noerp.entity.GenericValue;
@@ -89,7 +88,7 @@ public class PartyHelper {
                 if (UtilFormatOut.checkNull(partyValue.getString("lastName")) != null) {
                     result.append(UtilFormatOut.checkNull(partyValue.getString("lastName")));
                     if (partyValue.getString("firstName") != null) {
-                        result.append(", ");
+                        result.append("");
                     }
                 }
                 result.append(UtilFormatOut.checkNull(partyValue.getString("firstName")));

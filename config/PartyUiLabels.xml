@@ -4417,7 +4417,7 @@
         <value xml:lang="ru">OFBiz: Управление участниками</value>
         <value xml:lang="th">OFBiz: การจัดการกลุ่มผู้ใช้</value>
         <value xml:lang="vi">vCloudBusines: Quản lý Tác nhân (Cá nhân/Tổ chức)</value>
-        <value xml:lang="zh">OFBiz: 会员管理程序</value>
+        <value xml:lang="zh">买鼠云: 会员管理程序</value>
         <value xml:lang="zh_TW">OFBiz: 團體管理</value>
     </property>
     <property key="PartyCompanyNameMissingError">

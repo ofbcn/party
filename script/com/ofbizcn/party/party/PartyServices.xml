@@ -302,7 +302,7 @@
             <call-class-method method-name="getDataResourceContentUploadPath"
                 class-name="com.ofbizcn.content.data.DataResourceWorker"
                 ret-field="uploadPath">
-                <field field="delegator" type="org.ofbiz.entity.Delegator" />
+                <field field="delegator" type="org.noerp.entity.Delegator" />
                 <field field="absolute" type="boolean" />
             </call-class-method>
             <log level="always" message="[createPartyContent] - Found Subdir : ${uploadPath}" />
@@ -427,7 +427,7 @@
                     <call-class-method method-name="getDataResourceContentUploadPath"
                         class-name="com.ofbizcn.content.data.DataResourceWorker"
                         ret-field="uploadPath">
-                        <field field="delegator" type="org.ofbiz.entity.Delegator" />
+                        <field field="delegator" type="org.noerp.entity.Delegator" />
                         <field field="absolute" type="boolean" />
                     </call-class-method>
                     <log level="always"
