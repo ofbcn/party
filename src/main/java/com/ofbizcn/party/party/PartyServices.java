@@ -2448,7 +2448,7 @@ public class PartyServices {
     public static List<Map<String, Object>> getPersonsByPartyGroup(Delegator delegator, Locale locale, String partyGroupId, String roleTypeId, boolean recursive)
     		throws GenericEntityException{
     	
-    	Map<String, Object> condition = UtilMisc.toMap("partyIdFrom", partyGroupId, "partyTypeId", "PERSON");
+    	Map<String, Object> condition = UtilMisc.toMap("partyIdFrom", partyGroupId, "partyRelationshipTypeId", "GROUP_ROLLUP", "partyTypeId", "PERSON");
     	
     	if(roleTypeId != null){
     		condition.put("roleTypeIdTo", roleTypeId);
@@ -2475,7 +2475,7 @@ public class PartyServices {
     	//递归子部门
     	if(recursive){
     		List<GenericValue> childPartyGroups = EntityUtil.filterByDate(delegator.findByAnd("PartyRelationshipAndDetail",
-    				UtilMisc.toMap("partyIdFrom", partyGroupId, "partyRelationshipTypeId", "GROUP_ROLLUP"), null, false));
+    				UtilMisc.toMap("partyIdFrom", partyGroupId, "partyRelationshipTypeId", "GROUP_ROLLUP", "partyTypeId", "PARTY_GROUP"), null, false));
     		
     		for (Iterator<GenericValue> iterator = childPartyGroups.iterator(); iterator.hasNext();) {
 				GenericValue genericValue = (GenericValue) iterator.next();
