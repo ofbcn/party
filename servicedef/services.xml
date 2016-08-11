@@ -424,8 +424,8 @@ under the License.
         <auto-attributes entity-name="PostalAddress" include="all" mode="IN" optional="true"/>
         <attribute name="contactMechId" type="String" mode="OUT" optional="false"/>
         <override name="address1" optional="false"/>
-        <override name="city" optional="false"/>
-        <override name="postalCode" optional="false"/>
+        <override name="city" optional="true"/>
+        <override name="postalCode" optional="true"/>
     </service>
     <!-- Party ContachMech reverse find -->
     <service name="findPartyFromEmailAddress" engine="simple"
@@ -466,7 +466,7 @@ under the License.
         <attribute name="contactMechId" type="String" mode="OUT" optional="false"/>
         <override name="address1" optional="false"/>
         <override name="city" optional="false"/>
-        <override name="postalCode" optional="false"/>
+        <override name="postalCode" optional="true"/>
     </service>
     <service name="updatePostalAddress" engine="simple"
             location="component://party/script/com/ofbizcn/party/contact/ContactMechServices.xml" invoke="updatePostalAddress" auth="true">
