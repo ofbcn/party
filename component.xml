@@ -46,6 +46,6 @@ under the License.
         description="PartyComponentDescription"
         server="default-server"
         location="webapp/partymgr"
-        access-permission="OFBTOOLS,PARTYMGR_ADMIN"
+        base-permission="PARTYMGR_ADMIN"
         mount-point="/partymgr"/>
 </component>
