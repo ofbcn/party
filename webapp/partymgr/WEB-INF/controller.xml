@@ -571,8 +571,8 @@ under the License.
     <request-map uri="createPartyRelationshipAndRole">
         <security https="true" auth="true"/>
         <event type="service" path="" invoke="createPartyRelationshipAndRole"/>
-        <response name="success" type="request-redirect-noparam" value="backHome"/>
-        <response name="error" type="request-redirect-noparam" value="backHome"/>
+        <response name="success" type="request-redirect-noparam" value="backLast"/>
+        <response name="error" type="request-redirect-noparam" value="backLast"/>
     </request-map>
     <request-map uri="createPartyRelationshipContactAccount">
         <security https="true" auth="true"/>
