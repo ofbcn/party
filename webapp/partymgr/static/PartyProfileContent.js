@@ -20,14 +20,15 @@ under the License.
 /**
  *
  */
-var uiLabelJsonObject = null;
+var uiLabelArray = null;
 jQuery(document).ready(function() {
 
     var labelObject = {
             "CommonUiLabels" : ["CommonUpload", "CommonSave", "CommonCompleted"]
           };
 
-    uiLabelJsonObjects = getJSONuiLabels(labelObject);
+    var uiLabelJsonObjects = getJSONuiLabels(labelObject);
+    uiLabelArray = uiLabelJsonObjects['CommonUiLabels'];
 
     jQuery("#progress_bar").progressbar({value: 0});
 });
@@ -57,7 +58,7 @@ function uploadCompleted(){
     // to the page partyContentList
     jQuery("#partyContentList").html(iframePartyContentList);
 
-    jQuery('#progressBarSavingMsg').html(uiLabelJsonObjects.CommonUiLabels[2]);
+    jQuery('#progressBarSavingMsg').html(uiLabelArray[2]);
     // reset progressbar
     jQuery("#progress_bar").progressbar("option", "value", 0);
 
@@ -85,7 +86,7 @@ function checkIframeStatus() {
 }
 
 function getUploadProgressStatus(event){
-    jQuery('#uploadPartyContent').append("<span id='progressBarSavingMsg' class='label'>" + uiLabelJsonObjects.CommonUiLabels[0] + "...</span>");
+    jQuery('#uploadPartyContent').append("<span id='progressBarSavingMsg' class='label'>" + uiLabelArray[0] + "...</span>");
     var i=0;
     jQuery.fjTimer({
         interval: 1000,
@@ -105,9 +106,9 @@ function getUploadProgressStatus(event){
                      } else {
                         var readPercent = data.readPercent;
                         jQuery("#progress_bar").progressbar("option", "value", readPercent);
-                        jQuery('#progressBarSavingMsg').html(uiLabelJsonObjects.CommonUiLabels[0] + "... (" + readPercent + "%)");
+                        jQuery('#progressBarSavingMsg').html(uiLabelArray[0] + "... (" + readPercent + "%)");
                         if(readPercent > 99){
-                            jQuery('#progressBarSavingMsg').html(uiLabelJsonObjects.CommonUiLabels[1] + "...");
+                            jQuery('#progressBarSavingMsg').html(uiLabelArray[1] + "...");
                             // stop the fjTimer
                             timerId.stop();
                             // call the upload complete method to do final stuff
